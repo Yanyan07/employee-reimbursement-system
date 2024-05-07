@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reimbs")
+@CrossOrigin(origins="http://localhost:3000", allowCredentials = "true")
 public class ReimbursementController {
     private ReimbursementService reimbursementService;
 
@@ -172,5 +173,26 @@ public class ReimbursementController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{reimbId}")
+    public ResponseEntity<?> getReimbursementById(int reimbId, HttpSession session){
+        if(session.getAttribute("userId") == null){
+            return ResponseEntity.status(401).body("You must login to see your reimbursement!");
+        }
+        try{
+            Reimbursement reimbursement = reimbursementService.getReimbursementById(reimbId, (int)session.getAttribute("userId"));
+            return ResponseEntity.ok(reimbursement);
+        }catch(RuntimeException e){
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    //for testing
+    @PutMapping("/test/{reimbId}")
+    public ResponseEntity<?> backToPending(@PathVariable int reimbId){
+        return ResponseEntity.ok(reimbursementService.backToPending(reimbId));
+    }
+
+
 
 }

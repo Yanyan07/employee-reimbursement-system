@@ -1,0 +1,13 @@
+
+.body-container .welcome {
+    padding-top: 8%;
+    width: 60%;
+    height: 50%;
+    margin: 10% auto;
+    border: dashed 1px #006600;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: #006600;
+    border-radius: 100px;
+}

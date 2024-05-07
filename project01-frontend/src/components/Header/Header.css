@@ -1,0 +1,16 @@
+
+.header {
+    padding: 20px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: space-around;
+}
+
+.header p {
+    flex: 8;
+    font-size: 25px;
+}
+
+.header button {
+    flex: 1;
+}

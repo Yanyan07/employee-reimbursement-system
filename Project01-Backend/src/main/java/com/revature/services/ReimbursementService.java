@@ -91,5 +91,33 @@ public class ReimbursementService {
         return reimbursementDAO.save(reimbursement);
     }
 
+    public Reimbursement getReimbursementById(int reimbId, int userId){
+        Optional<Reimbursement> optionalReimbursement = reimbursementDAO.findById(reimbId);
+        if(optionalReimbursement.isEmpty()){
+            throw new RuntimeException("optionalReimbursement Not Found!");
+        }
+        Optional<User> optionalUser = userDAO.findById(userId);
+        if(optionalUser.isEmpty()){
+            throw new RuntimeException("User Not Found!");
+        }
+        Reimbursement reimbursement = optionalReimbursement.get();
+        if(reimbursement.getUser().getUserId() != userId){
+            throw new RuntimeException("current reimbursement not match the user: " + optionalUser.get().getUsername());
+        }
+        return optionalReimbursement.get();
+    }
+
+    //for testing
+    public Reimbursement backToPending(int reimbId){
+        Optional<Reimbursement> optionalReimbursement = reimbursementDAO.findById(reimbId);
+        if(optionalReimbursement.isEmpty()){
+            throw new RuntimeException("optionalReimbursement Not Found!");
+        }
+        Reimbursement reimbursement = optionalReimbursement.get();
+
+        reimbursement.setStatus("pending");
+        return reimbursementDAO.save(reimbursement);
+    }
+
 
 }

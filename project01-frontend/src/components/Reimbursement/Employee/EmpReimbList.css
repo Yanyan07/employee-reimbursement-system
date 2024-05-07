@@ -1,0 +1,27 @@
+
+.list-container .title {
+    display: flex;
+    padding: 20px 0;
+    font-weight: bold;
+    background-color: #e6e6e6;
+
+}
+.list-container .title span {
+    width: 20%;
+}
+
+.list-container .items {
+    display: flex;
+    flex-direction: column;
+}
+
+.items li {
+    display: flex;
+    padding: 5px, 0;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+.items li span {
+    width: 20%;
+}
+

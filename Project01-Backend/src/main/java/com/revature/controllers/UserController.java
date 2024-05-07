@@ -58,5 +58,51 @@ public class UserController {
         return ResponseEntity.ok(userService.allUsers());
     }
 
+    @GetMapping("/session")
+    public ResponseEntity<String> getSessionRole(HttpSession session){
+        if(session.getAttribute("userId")==null || session.getAttribute("role")==null){
+            return ResponseEntity.status(404).body("User Not Found!");
+        }
+        return ResponseEntity.ok((String)session.getAttribute("role"));
+    }
+
+    @DeleteMapping("/{uId}")
+    public ResponseEntity<String> deleteUserById(@PathVariable int uId, HttpSession session) {
+        if(session.getAttribute("userId") == null){
+            return ResponseEntity.status(401).body("You must login in to see users");
+        }
+        if(!"manager".equalsIgnoreCase((String)session.getAttribute("role"))){
+            return ResponseEntity.status(401).body("Only managers are allowed to delete users");
+        }
+        try{
+            userService.deleteUser(uId);
+            return ResponseEntity.ok("Delete user with id: " + uId);
+        }catch(RuntimeException e){
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{uId}")
+    public ResponseEntity<String> promoteUser(@PathVariable int uId, HttpSession session){
+        if(session.getAttribute("userId") == null){
+            return ResponseEntity.status(401).body("You must login in to see users");
+        }
+        if(!"manager".equalsIgnoreCase((String)session.getAttribute("role"))){
+            return ResponseEntity.status(401).body("Only managers are allowed to promote users");
+        }
+        try{
+            userService.updateUser(uId);
+            return ResponseEntity.ok("Promoted user with id: " + uId);
+        }catch(RuntimeException e){
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
+    //for testing
+    @PutMapping("/test/{userId}")
+    public ResponseEntity<?> setEmpolyeeRole(@PathVariable int userId, String role){
+        return ResponseEntity.ok(userService.updateRole(userId, role));
+    }
+
 
 }

@@ -53,8 +53,30 @@ public class UserService {
         return userDAO.findAll();
     }
 
+    public void deleteUser(int userId){
+        userDAO.deleteById(userId);
+    }
 
+    public User updateUser(int userId){
+        Optional<User> optionalUser = userDAO.findById(userId);
+        if(optionalUser.isEmpty()){
+            throw new IllegalArgumentException("can't find user");
+        }
+        User u = optionalUser.get();
+        u.setRole("manager");
+        return userDAO.save(u);
+    }
 
+    //for testing
+    public User updateRole(int userId, String employee){
+        Optional<User> optionalUser = userDAO.findById(userId);
+        if(optionalUser.isEmpty()){
+            throw new IllegalArgumentException("can't find user");
+        }
+        User u = optionalUser.get();
+        u.setRole("employee");
+        return userDAO.save(u);
+    }
 
 
 }
